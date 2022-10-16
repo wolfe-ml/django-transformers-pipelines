@@ -1,0 +1,4 @@
+coverage
+drf-spectacular
+transformers
+torch
