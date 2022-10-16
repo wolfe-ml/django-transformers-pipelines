@@ -5,7 +5,7 @@ from datetime import datetime
 
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from rest_framework.response import Response
+from django.http import JsonResponse
 
 from django_inference.models import Prediction, Predictor, Tag
 from django_inference.serializers import (
@@ -15,6 +15,7 @@ from django_inference.serializers import (
 )
 from django_inference.utils import get_pipeline
 from django.core import serializers
+from django.utils.timezone import make_aware
 
 
 class PredictorViewSet(
@@ -66,10 +67,10 @@ class PredictionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
         data = request.data.pop("data", [])
         # tags = request.data.pop("tags", [])
-        t0 = datetime.now()
+        t0 = make_aware(datetime.now())
         prediction = self.pipeline(data)
         print(prediction)
-        t1 = datetime.now()
+        t1 = make_aware(datetime.now())
 
         Prediction.objects.create(
             predictor=None,
@@ -80,4 +81,4 @@ class PredictionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             prediction_latency=t1,
         )
         # serializer = self.get_serializer()
-        return Response(prediction, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(prediction, status=status.HTTP_200_OK, safe=False)
