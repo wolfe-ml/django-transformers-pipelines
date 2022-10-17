@@ -3,6 +3,8 @@
 import os
 import django
 from django.conf import settings
+from django.core.management import call_command
+import sys
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "django_inference"))
 
@@ -25,3 +27,11 @@ def boot_django():
         },
     )
     django.setup()
+
+
+if __name__ == "__main__":
+    command = "shell"
+    if len(sys.argv[1:]) > 0:
+        command = sys.argv[1:]
+
+    call_command(command)
