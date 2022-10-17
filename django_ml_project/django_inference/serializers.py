@@ -26,17 +26,14 @@ class TagSerializer(serializers.ModelSerializer):
 class PredictionSerializer(serializers.ModelSerializer):
     """Serializer for predictions"""
 
-    predictor = PredictorSerializer(required=False)
     tags = TagSerializer(many=True, required=False)
 
     class Meta:
         model = Prediction
         fields = [
             "id",
-            "predictor",
             "tags",
             "input_data",
-            "processed_data",
             "prediction",
             "request_time",
             "prediction_latency",
@@ -44,8 +41,6 @@ class PredictionSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             "id",
-            "predictor",
-            "processed_data",
             "prediction",
             "request_time",
             "prediction_latency",

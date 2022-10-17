@@ -2,6 +2,7 @@
 Views for the inference app
 """
 from datetime import datetime
+import json
 
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
@@ -16,6 +17,9 @@ from django_inference.serializers import (
 from django_inference.utils import get_pipeline
 from django.core import serializers
 from django.utils.timezone import make_aware
+import logging
+
+from django_inference.utils import get_or_create_tags
 
 
 class PredictorViewSet(
@@ -48,6 +52,7 @@ class PredictionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = PredictionSerializer
     queryset = Prediction.objects.all()
     pipeline = get_pipeline()
+    logger = logging.Logger(__name__)
 
     def get_queryset(self):
         """Retrieve predictions"""
@@ -66,19 +71,22 @@ class PredictionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         """Run inference on the pipeline"""
 
         data = request.data.pop("data", [])
-        # tags = request.data.pop("tags", [])
+        tags = request.data.pop("tags", [])
+
+        self.logger.info("starting prediction...")
         t0 = make_aware(datetime.now())
         prediction = self.pipeline(data)
-        print(prediction)
         t1 = make_aware(datetime.now())
+        self.logger.info("Completed prediction")
 
-        Prediction.objects.create(
-            predictor=None,
-            # tags=tags,
+        self.logger.info("Saving prediction...")
+        output = self.queryset.create(
             input_data=data,
             prediction=prediction,
             request_time=t0,
             prediction_latency=t1,
         )
-        # serializer = self.get_serializer()
-        return JsonResponse(prediction, status=status.HTTP_200_OK, safe=False)
+        get_or_create_tags(tags, output)
+        self.logger.info("Done saving prediction")
+        serializer = self.get_serializer(output)
+        return JsonResponse(serializer.data, status=status.HTTP_200_OK, safe=False)
