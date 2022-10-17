@@ -15,12 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django_transformers_pipelines.views import (
-    PredictionViewSet,
-    PredictorViewSet,
-    TagViewSet,
-)
-from rest_framework.routers import DefaultRouter
+from django_transformers_pipelines.routers import pipeline_router
 from django.urls import (
     path,
     include,
@@ -30,11 +25,6 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
-router = DefaultRouter()
-router.register("predictions", PredictionViewSet)
-router.register("predictors", PredictorViewSet)
-router.register("tags", TagViewSet)
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("schema/", SpectacularAPIView.as_view(), name="api-schema"),
@@ -43,5 +33,5 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="api-schema"),
         name="api-docs",
     ),
-    path("api/", include(router.urls)),
+    path("api/", include(pipeline_router.urls)),
 ]
