@@ -9,7 +9,7 @@ class DjangoInferenceConfig(AppConfig):
 
     def ready(self):
 
-        if not hasattr(settings, "PIPELINE"):
+        if not hasattr(settings, "TRANSFORMERS_PIPELINE"):
             raise ImproperlyConfigured(
-                "You must specify a PIPELINE object in your settings"
+                "You must specify a TRANSFORMERS_PIPELINE object in your settings"
             )
