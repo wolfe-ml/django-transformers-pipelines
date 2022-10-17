@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django_inference.models import Prediction, Predictor, Tag
+from django_transformers_pipelines.models import Prediction, Predictor, Tag
 
 
 @admin.register(Prediction)

@@ -2,7 +2,7 @@
 Serializers for the django inference models
 """
 from rest_framework import serializers
-from django_inference.models import Predictor, Prediction, Tag
+from django_transformers_pipelines.models import Predictor, Prediction, Tag
 
 
 class PredictorSerializer(serializers.ModelSerializer):

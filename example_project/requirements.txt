@@ -1,0 +1,4 @@
+drf-spectacular
+transformers
+torch
+-e ../

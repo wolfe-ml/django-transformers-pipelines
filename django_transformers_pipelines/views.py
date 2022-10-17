@@ -1,25 +1,20 @@
 """
 Views for the inference app
 """
+import logging
 from datetime import datetime
-import json
 
+from django.http import JsonResponse
+from django.utils.timezone import make_aware
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
-from django.http import JsonResponse
 
-from django_inference.models import Prediction, Predictor, Tag
-from django_inference.serializers import (
-    PredictionSerializer,
-    PredictorSerializer,
-    TagSerializer,
-)
-from django_inference.utils import get_pipeline
-from django.core import serializers
-from django.utils.timezone import make_aware
-import logging
-
-from django_inference.utils import get_or_create_tags
+from django_transformers_pipelines.models import Prediction, Predictor, Tag
+from django_transformers_pipelines.serializers import (PredictionSerializer,
+                                                       PredictorSerializer,
+                                                       TagSerializer)
+from django_transformers_pipelines.utils import (get_or_create_tags,
+                                                 get_pipeline)
 
 
 class PredictorViewSet(

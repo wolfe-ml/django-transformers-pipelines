@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.test import TestCase
-from django_inference.models import Tag, Prediction, Predictor
-from django_inference.utils import get_or_create_tags
+from django_transformers_pipelines.models import Tag, Prediction, Predictor
+from django_transformers_pipelines.utils import get_or_create_tags
 
 
 class ModelTests(TestCase):

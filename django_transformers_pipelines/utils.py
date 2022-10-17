@@ -3,7 +3,7 @@ Utilities for django inference
 """
 from django.conf import settings
 from transformers import pipeline
-from django_inference.models import Tag
+from django_transformers_pipelines.models import Tag
 
 
 def get_pipeline():
