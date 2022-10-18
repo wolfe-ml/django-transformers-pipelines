@@ -6,7 +6,9 @@ from django.conf import settings
 from django.core.management import call_command
 import sys
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "django_transformers_pipelines"))
+BASE_DIR = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "django_transformers_pipelines")
+)
 
 
 def boot_django():
@@ -34,6 +36,10 @@ if __name__ == "__main__":
     if len(sys.argv[1:]) > 0:
         command = " ".join(sys.argv[1:])
 
-    print(command)
+    print("booting django...")
     boot_django()
+    print("Done booting django!")
+
+    print(f"Running command: '{command}'...")
     call_command(command)
+    print(f"Finished running command: '{command}'")
