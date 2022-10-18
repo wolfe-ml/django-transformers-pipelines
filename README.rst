@@ -1,6 +1,8 @@
 django-transformers-pipelines
 ===============
 
+This is still ind development and has not yet been released
+
 This is a python package housing a django app to allow for a simple interface to facilitate
 ML model inference and storage of prediction results in the associated django DB.
 
@@ -61,8 +63,7 @@ Edit your project `urls.py` file to import the URLs:
     ]
 
 
-Finally, add the models to your database:
-
+Finally, make migrations for all apps, or add the specific app to your database:
 
 .. code-block:: bash
 
