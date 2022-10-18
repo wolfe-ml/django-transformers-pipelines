@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.management import call_command
 import sys
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "django_inference"))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "django_transformers_pipelines"))
 
 
 def boot_django():
@@ -19,7 +19,7 @@ def boot_django():
                 "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
             }
         },
-        INSTALLED_APPS=("django_inference",),
+        INSTALLED_APPS=("django_transformers_pipelines",),
         TIME_ZONE="UTC",
         USE_TZ=True,
         TRANSFORMERS_PIPELINE={

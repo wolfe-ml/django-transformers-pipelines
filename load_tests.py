@@ -7,7 +7,7 @@ from boot_django import boot_django
 boot_django()
 
 default_labels = [
-    "django_inference.tests",
+    "django_transformers_pipelines.tests",
 ]
 
 

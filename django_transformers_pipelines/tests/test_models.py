@@ -5,7 +5,7 @@ from django_transformers_pipelines.utils import get_or_create_tags
 
 
 class ModelTests(TestCase):
-    """Tests for django_inference models"""
+    """Tests for django_transformers_pipelines models"""
 
     def test_create_tag(self):
         """Test creating a tag is successful"""

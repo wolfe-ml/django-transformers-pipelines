@@ -3,4 +3,4 @@
 set -e
 
 
-python django_ml_project/manage.py test django_inference
+python django_ml_project/manage.py test django_transformers_pipelines
