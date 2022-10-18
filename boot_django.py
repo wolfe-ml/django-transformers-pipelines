@@ -32,6 +32,8 @@ def boot_django():
 if __name__ == "__main__":
     command = "shell"
     if len(sys.argv[1:]) > 0:
-        command = sys.argv[1:]
+        command = " ".join(sys.argv[1:])
 
+    print(command)
+    boot_django()
     call_command(command)
