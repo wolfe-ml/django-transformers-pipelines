@@ -1,7 +1,7 @@
 django-transformers-pipelines
 ===============
 
-This is still ind development and has not yet been released
+This is still in development and has not yet been released
 
 This is a python package housing a django app to allow for a simple interface to facilitate
 ML model inference and storage of prediction results in the associated django DB.
