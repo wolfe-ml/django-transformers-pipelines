@@ -1,0 +1,16 @@
+[run]
+branch = True
+
+[paths]
+source = django_transformers_pipelines
+
+[report]
+
+exclude_lines =
+
+    # Don't complain if non-runnable code isn't run:
+    if __name__ == .__main__.:
+
+show_missing = True
+
+fail_under = 80

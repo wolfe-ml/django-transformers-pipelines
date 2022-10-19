@@ -2,3 +2,5 @@
 *.egg-info
 *__pycache__*
 *db.sqlite3
+*.vscode
+*/migrations/0001_initial.py

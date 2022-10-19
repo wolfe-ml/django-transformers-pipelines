@@ -6,7 +6,7 @@ on:
     branches: main
 
 jobs:
-  test:
+  linting-and-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -15,10 +15,15 @@ jobs:
       - name: Install Python Dependencies
         run: pip install -e .
 
+      - name: Linting (Pylint)
+        run: pylint django_transformers_pipelines
+
       - name: Migrations
         run: |
           python boot_django.py makemigrations
           python boot_django.py migrate
 
       - name: Run Unit Tests
-        run: python boot_django.py test
+        run: |
+          coverage run boot_django.py test
+          coverage report
