@@ -10,11 +10,12 @@ from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 
 from django_transformers_pipelines.models import Prediction, Predictor, Tag
-from django_transformers_pipelines.serializers import (PredictionSerializer,
-                                                       PredictorSerializer,
-                                                       TagSerializer)
-from django_transformers_pipelines.utils import (get_or_create_tags,
-                                                 get_pipeline)
+from django_transformers_pipelines.serializers import (
+    PredictionSerializer,
+    PredictorSerializer,
+    TagSerializer,
+)
+from django_transformers_pipelines.utils import get_or_create_tags, get_pipeline
 
 
 class PredictorViewSet(
@@ -69,17 +70,17 @@ class PredictionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         tags = request.data.pop("tags", [])
 
         self.logger.info("starting prediction...")
-        t0 = make_aware(datetime.now())
+        pred_start = make_aware(datetime.now())
         prediction = self.pipeline(data)
-        t1 = make_aware(datetime.now())
+        pred_end = make_aware(datetime.now())
         self.logger.info("Completed prediction")
 
         self.logger.info("Saving prediction...")
         output = self.queryset.create(
             input_data=data,
             prediction=prediction,
-            request_time=t0,
-            prediction_latency=t1,
+            request_time=pred_start,
+            prediction_latency=pred_end,
         )
         get_or_create_tags(tags, output)
         self.logger.info("Done saving prediction")

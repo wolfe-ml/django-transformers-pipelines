@@ -10,6 +10,8 @@ class PredictorSerializer(serializers.ModelSerializer):
     """Serializer for predictors"""
 
     class Meta:
+        """Predictor serializer meta class"""
+
         model = Predictor
         fields = ["id", "name", "version", "parameters"]
         read_only_fields = ["id"]
@@ -19,6 +21,8 @@ class TagSerializer(serializers.ModelSerializer):
     """Serializer for tags"""
 
     class Meta:
+        """Tag serializer meta class"""
+
         model = Tag
         fields = ["id", "name"]
         read_only_fields = ["id"]
@@ -30,6 +34,8 @@ class PredictionSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, required=False)
 
     class Meta:
+        """Prediction serializer meta class"""
+
         model = Prediction
         fields = [
             "id",

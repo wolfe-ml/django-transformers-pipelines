@@ -17,8 +17,8 @@ class Tag(models.Model):
 
     name = models.CharField(max_length=255)
 
-    def __str__(self):
-        return self.name
+    def __str__(self) -> str:
+        return str(self.name)
 
 
 class Prediction(models.Model):

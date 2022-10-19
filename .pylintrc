@@ -1,0 +1,7 @@
+[MAIN]
+fail-under=9.0
+; confidence=HIGH
+disable=
+    fixme,
+    no-member,
+    too-few-public-methods,

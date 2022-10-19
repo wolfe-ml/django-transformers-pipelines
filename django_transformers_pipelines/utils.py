@@ -16,5 +16,5 @@ def get_or_create_tags(tags, prediction):
     """Handle getting or creating tags as needed"""
 
     for tag in tags:
-        tag_obj, created = Tag.objects.get_or_create(**tag)
+        tag_obj, _ = Tag.objects.get_or_create(**tag)
         prediction.tags.add(tag_obj)
