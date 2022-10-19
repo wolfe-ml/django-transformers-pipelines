@@ -15,8 +15,10 @@ jobs:
       - name: Install Python Dependencies
         run: pip install -e .
 
-      - name: Run Unit Tests
+      - name: Migrations
         run: |
           python boot_django.py makemigrations
           python boot_django.py migrate
-          python boot_django.py test
+
+      - name: Run Unit Tests
+        run: python boot_django.py test
