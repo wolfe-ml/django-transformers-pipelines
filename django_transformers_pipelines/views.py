@@ -16,6 +16,8 @@ from django_transformers_pipelines.serializers import (
     TagSerializer,
 )
 from django_transformers_pipelines.utils import get_or_create_tags, get_pipeline
+from transformers import pipeline
+from django.conf import settings
 
 
 class PredictorViewSet(
@@ -28,6 +30,44 @@ class PredictorViewSet(
 
     serializer_class = PredictorSerializer
     queryset = Predictor.objects.all()
+    logger = logging.Logger(__name__)
+
+    @action(detail=True, methods=["post"])
+    def inference(self, request, pk=None):
+        """Run inference on the pipeline"""
+
+        self.logger.info("Loading pipeline...")
+        try:
+            predictor = self.get_object()
+        except:
+            serializer = self.get_serializer(data=settings.TRANSFORMERS_PIPELINE)
+            serializer.is_valid()
+            predictor = serializer.save()
+        predictor_pipeline = pipeline(**predictor.parameters)
+        self.logger.info("Done loading pipeline")
+
+        data = request.data.pop("data", [])
+        tags = request.data.pop("tags", [])
+
+        self.logger.info("starting prediction...")
+        pred_start = make_aware(datetime.now())
+        prediction = predictor_pipeline(data)
+        pred_end = make_aware(datetime.now())
+        self.logger.info("Completed prediction")
+
+        self.logger.info("Saving prediction...")
+        output = Prediction.objects.create(
+            predictor=predictor,
+            input_data=data,
+            prediction=prediction,
+            request_time=pred_start,
+            prediction_latency=pred_end,
+        )
+        get_or_create_tags(tags, output)
+        self.logger.info("Done saving prediction")
+
+        serializer = PredictionSerializer(output)
+        return JsonResponse(serializer.data, status=status.HTTP_200_OK, safe=False)
 
 
 class TagViewSet(
@@ -47,8 +87,6 @@ class PredictionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     serializer_class = PredictionSerializer
     queryset = Prediction.objects.all()
-    pipeline = get_pipeline()
-    logger = logging.Logger(__name__)
 
     def get_queryset(self):
         """Retrieve predictions"""
@@ -61,28 +99,3 @@ class PredictionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             queryset = queryset.filter(tags__id__in=tag_ids)
 
         return queryset.order_by("-id").distinct()
-
-    @action(detail=False, methods=["post"])
-    def inference(self, request):
-        """Run inference on the pipeline"""
-
-        data = request.data.pop("data", [])
-        tags = request.data.pop("tags", [])
-
-        self.logger.info("starting prediction...")
-        pred_start = make_aware(datetime.now())
-        prediction = self.pipeline(data)
-        pred_end = make_aware(datetime.now())
-        self.logger.info("Completed prediction")
-
-        self.logger.info("Saving prediction...")
-        output = self.queryset.create(
-            input_data=data,
-            prediction=prediction,
-            request_time=pred_start,
-            prediction_latency=pred_end,
-        )
-        get_or_create_tags(tags, output)
-        self.logger.info("Done saving prediction")
-        serializer = self.get_serializer(output)
-        return JsonResponse(serializer.data, status=status.HTTP_200_OK, safe=False)

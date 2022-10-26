@@ -1,9 +1,11 @@
 """
 App registration for django_transformers_pipelines
 """
+from symbol import parameters
 from django.apps import AppConfig
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+import warnings
 
 
 class DjangoTransformersPipelinesConfig(AppConfig):
@@ -18,6 +20,6 @@ class DjangoTransformersPipelinesConfig(AppConfig):
     def ready(self):
 
         if not hasattr(settings, "TRANSFORMERS_PIPELINE"):
-            raise ImproperlyConfigured(
-                "You must specify a TRANSFORMERS_PIPELINE object in your settings"
+            warnings.warn(
+                "No TRANSFORMERS_PIPELINE object specified in the django settings"
             )

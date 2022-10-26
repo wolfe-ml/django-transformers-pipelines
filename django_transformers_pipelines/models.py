@@ -24,7 +24,11 @@ class Tag(models.Model):
 class Prediction(models.Model):
     """Prediction model"""
 
-    # TODO: Add and configure predictor model to be included in prediction objects
+    predictor = models.ForeignKey(
+        "Predictor",
+        on_delete=models.PROTECT,
+        related_name="predictions",
+    )
     tags = models.ManyToManyField("Tag", related_name="predictions")
 
     input_data = models.JSONField()

@@ -148,5 +148,9 @@ SPECTACULAR_SETTINGS = {
 
 # Add the pipeline for the project
 TRANSFORMERS_PIPELINE = {
-    "task": "text-generation",
+    "name": "core",
+    "version": 1,
+    "parameters": {
+        "task": "text-generation",
+    },
 }
