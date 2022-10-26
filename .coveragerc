@@ -14,3 +14,5 @@ exclude_lines =
 show_missing = True
 
 fail_under = 80
+
+omit = django_transformers_pipelines/tests/*.py
