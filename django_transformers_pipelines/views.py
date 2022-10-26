@@ -17,7 +17,6 @@ from django_transformers_pipelines.serializers import (
 )
 from django_transformers_pipelines.utils import get_or_create_tags, get_pipeline
 from transformers import pipeline
-from django.conf import settings
 
 
 class PredictorViewSet(
@@ -40,7 +39,7 @@ class PredictorViewSet(
         try:
             predictor = self.get_object()
         except:
-            serializer = self.get_serializer(data=settings.TRANSFORMERS_PIPELINE)
+            serializer = self.get_serializer(data=get_pipeline())
             serializer.is_valid()
             predictor = serializer.save()
         predictor_pipeline = pipeline(**predictor.parameters)

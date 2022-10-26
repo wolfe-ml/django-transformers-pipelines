@@ -9,7 +9,7 @@ from django_transformers_pipelines.models import Tag
 def get_pipeline():
     """Get the pipeline object from the django settings"""
     pipeline_conf = getattr(settings, "TRANSFORMERS_PIPELINE", None)
-    return pipeline(**pipeline_conf)
+    return pipeline_conf
 
 
 def get_or_create_tags(tags, prediction):
