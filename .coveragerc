@@ -15,4 +15,8 @@ show_missing = True
 
 fail_under = 80
 
-omit = django_transformers_pipelines/tests/*.py
+omit =
+    django_transformers_pipelines/tests/*.py,
+    django_transformers_pipelines/migrations/*.py
+
+include = django_transformers_pipelines/*.py
