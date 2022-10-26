@@ -1,6 +1,10 @@
-from datetime import datetime
 from django.test import TestCase
 from django_transformers_pipelines.models import Tag, Prediction, Predictor
+from django_transformers_pipelines.tests.factories import (
+    PredictionFactory,
+    PredictorFactory,
+    TagFactory,
+)
 from django_transformers_pipelines.utils import get_or_create_tags
 
 
@@ -9,20 +13,22 @@ class ModelTests(TestCase):
 
     def test_create_tag(self):
         """Test creating a tag is successful"""
-        tag = Tag.objects.create(name="Tag1")
+        tag = TagFactory.create()
 
         self.assertEqual(str(tag), tag.name)
         self.assertIn(tag, Tag.objects.all())
 
+    def test_create_predictor(self):
+        """Test creating a predictor is successful"""
+
+        predictor = PredictorFactory.create()
+
+        self.assertIn(predictor, Predictor.objects.all())
+
     def test_create_prediction(self):
         """Test creating a prediction is successful"""
 
-        prediction = Prediction.objects.create(
-            input_data="test input",
-            prediction="test prediction",
-            request_time=datetime.now(),
-            prediction_latency=datetime.now(),
-        )
+        prediction = PredictionFactory.create()
 
         self.assertIn(prediction, Prediction.objects.all())
 
@@ -33,12 +39,10 @@ class ModelTests(TestCase):
             {"name": "Tag2"},
             {"name": "Tag3"},
         ]
-        prediction = Prediction.objects.create(
-            input_data="test input",
-            prediction="test prediction",
-            request_time=datetime.now(),
-            prediction_latency=datetime.now(),
-        )
+        prediction = PredictionFactory.create()
         get_or_create_tags(tags, prediction)
 
         self.assertIn(prediction, Prediction.objects.all())
+        all_tags = [str(tag) for tag in Tag.objects.all()]
+        for tag in tags:
+            self.assertIn(tag["name"], all_tags)
