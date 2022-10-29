@@ -19,4 +19,6 @@ omit =
     django_transformers_pipelines/tests/*.py,
     django_transformers_pipelines/migrations/*.py
 
-include = django_transformers_pipelines/*.py
+include =
+    django_transformers_pipelines/*.py
+    django_transformers_pipelines/views.py

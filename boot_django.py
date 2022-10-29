@@ -24,9 +24,6 @@ def boot_django():
         INSTALLED_APPS=("django_transformers_pipelines",),
         TIME_ZONE="UTC",
         USE_TZ=True,
-        TRANSFORMERS_PIPELINE={
-            "task": "text-generation",
-        },
     )
     django.setup()
 

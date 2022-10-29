@@ -145,12 +145,3 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_REQUEST": True,
 }
-
-# Add the pipeline for the project
-TRANSFORMERS_PIPELINE = {
-    "name": "core",
-    "version": 1,
-    "parameters": {
-        "task": "text-generation",
-    },
-}
