@@ -14,11 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django_transformers_pipelines.routers import pipeline_router
-from django.urls import (
-    path,
-    include,
-)
+from django_transformers_pipelines.urls import urlpatterns as dtp_urls
+from django.urls import path, include
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularSwaggerView,
@@ -32,5 +29,5 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="api-schema"),
         name="api-docs",
     ),
-    path("api/", include(pipeline_router.urls)),
+    path("api/", include(dtp_urls)),
 ]
