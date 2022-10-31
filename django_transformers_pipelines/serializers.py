@@ -3,7 +3,10 @@ Serializers for the django inference models
 """
 from rest_framework import serializers
 from django_transformers_pipelines.models import Predictor, Prediction, Tag
-from django_transformers_pipelines.utils import get_or_create_tags
+from django_transformers_pipelines.utils import (
+    get_or_create_tags,
+    run_predictor_pipeline,
+)
 
 
 class PredictorSerializer(serializers.ModelSerializer):
@@ -41,6 +44,7 @@ class PredictionSerializer(serializers.ModelSerializer):
             "id",
             "tags",
             "input_data",
+            "predictor",
             "prediction",
             "request_time",
             "prediction_latency",
@@ -58,8 +62,12 @@ class PredictionSerializer(serializers.ModelSerializer):
         """Create a prediction in the db"""
 
         tags = validated_data.pop("tags", [])
-        prediction = Prediction.objects.create(**validated_data)
+        data = validated_data.pop("input_data", [])
+        predictor = validated_data.pop("predictor", 1)
+
+        prediction = run_predictor_pipeline(predictor, data)
         get_or_create_tags(tags, prediction)
+
         return prediction
 
     def update(self, instance, validated_data):

@@ -1,6 +1,7 @@
 """
 Utilities for django inference
 """
+from typing import List
 from django.conf import settings
 from transformers import pipeline
 from django_transformers_pipelines.models import Predictor, Tag, Prediction
@@ -14,7 +15,7 @@ def get_pipeline():
     return pipeline_conf
 
 
-def get_or_create_tags(tags, prediction):
+def get_or_create_tags(tags: List[dict], prediction: Prediction):
     """Handle getting or creating tags as needed"""
 
     for tag in tags:
@@ -25,7 +26,10 @@ def get_or_create_tags(tags, prediction):
 def load_predictor_pipeline(predictor: Predictor):
     """load the predictor's pipeline for inference"""
     try:
-        return pipeline(**predictor.parameters)
+        if isinstance(predictor.parameters, dict):
+            return pipeline(**predictor.parameters)
+        else:
+            return pipeline(predictor.parameters)
     except:
         raise Exception(f"Improperly configured predictor pipeline: {predictor.id}")
 
