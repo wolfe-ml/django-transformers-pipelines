@@ -1,16 +1,13 @@
 """
 Views for the inference app
 """
-from rest_framework import mixins, viewsets
-
+from rest_framework import filters, mixins, viewsets
 from django_transformers_pipelines.models import Prediction, Predictor, Tag
 from django_transformers_pipelines.serializers import (
     PredictionSerializer,
     PredictorSerializer,
     TagSerializer,
 )
-
-from rest_framework import filters
 
 
 class PredictorViewSet(viewsets.ModelViewSet):

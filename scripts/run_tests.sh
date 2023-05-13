@@ -3,4 +3,5 @@
 set -e
 
 
-python boot_django.py test
+coverage run boot_django.py test
+coverage report

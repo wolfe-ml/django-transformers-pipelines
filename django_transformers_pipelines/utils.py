@@ -1,12 +1,13 @@
 """
 Utilities for django inference
 """
-from typing import List
-from django.conf import settings
-from transformers import pipeline
-from django_transformers_pipelines.models import Predictor, Tag, Prediction
 from datetime import datetime
+from typing import List
+import transformers
+from django.conf import settings
 from django.utils.timezone import make_aware
+from django_transformers_pipelines.exceptions import BadPipelineException
+from django_transformers_pipelines.models import Prediction, Predictor, Tag
 
 
 def get_pipeline():
@@ -26,12 +27,13 @@ def get_or_create_tags(tags: List[dict], prediction: Prediction):
 def load_predictor_pipeline(predictor: Predictor):
     """load the predictor's pipeline for inference"""
     try:
-        if isinstance(predictor.parameters, dict):
-            return pipeline(**predictor.parameters)
-        else:
-            return pipeline(predictor.parameters)
-    except:
-        raise Exception(f"Improperly configured predictor pipeline: {predictor.id}")
+        if isinstance(predictor.parameters, str):
+            predictor.parameters = {"task": predictor.parameters}
+        return transformers.pipeline(**predictor.parameters)
+    except Exception as exc:
+        raise BadPipelineException(
+            f"Improperly configured predictor pipeline: {predictor.id}"
+        ) from exc
 
 
 def run_predictor_pipeline(predictor: Predictor, data):
@@ -42,8 +44,8 @@ def run_predictor_pipeline(predictor: Predictor, data):
         pred_start = make_aware(datetime.now())
         prediction = predictor_pipeline(data)
         pred_end = make_aware(datetime.now())
-    except:
-        raise Exception("Encountered error while running pipeline")
+    except Exception as exc:
+        raise BadPipelineException("Encountered error while running pipeline") from exc
 
     try:
         return Prediction.objects.create(
@@ -53,7 +55,7 @@ def run_predictor_pipeline(predictor: Predictor, data):
             request_time=pred_start,
             prediction_latency=pred_end,
         )
-    except:
-        raise Exception(
+    except Exception as exc:
+        raise BadPipelineException(
             "Encountered error while inserting prediction into the database"
-        )
+        ) from exc

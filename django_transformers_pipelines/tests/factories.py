@@ -1,12 +1,12 @@
-from factory.django import DjangoModelFactory
-from django_transformers_pipelines.models import Prediction, Predictor, Tag
-from faker import Faker
+"""Factories to make models for tests"""
 import factory
+from faker import Faker
+from django_transformers_pipelines.models import Prediction, Predictor, Tag
 
 faker = Faker()
 
 
-class PredictorFactory(DjangoModelFactory):
+class PredictorFactory(factory.django.DjangoModelFactory):
     """Predictor factory"""
 
     name = faker.name()
@@ -14,22 +14,28 @@ class PredictorFactory(DjangoModelFactory):
     parameters = dict()
 
     class Meta:
+        """Meta params for predictor factory"""
+
         model = Predictor
 
 
-class TagFactory(DjangoModelFactory):
+class TagFactory(factory.django.DjangoModelFactory):
     """Tag factory"""
 
     name = faker.name()
 
     class Meta:
+        """Meta params for tag factory"""
+
         model = Tag
 
 
-class PredictionFactory(DjangoModelFactory):
+class PredictionFactory(factory.django.DjangoModelFactory):
     """Prediction factory"""
 
     class Meta:
+        """Meta params for prediction factory"""
+
         model = Prediction
 
     predictor = factory.SubFactory(PredictorFactory)
@@ -40,6 +46,7 @@ class PredictionFactory(DjangoModelFactory):
 
     @factory.post_generation
     def tags(self, create, extracted, **kwargs):
+        """function to add tags on creation"""
         if not create:
             # Simple build, do nothing.
             return

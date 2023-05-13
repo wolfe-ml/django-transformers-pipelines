@@ -21,4 +21,3 @@ omit =
 
 include =
     django_transformers_pipelines/*.py
-    django_transformers_pipelines/views.py

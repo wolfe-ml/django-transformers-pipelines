@@ -14,12 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.urls import include, path
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from django_transformers_pipelines.urls import urlpatterns as dtp_urls
-from django.urls import path, include
-from drf_spectacular.views import (
-    SpectacularAPIView,
-    SpectacularSwaggerView,
-)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
