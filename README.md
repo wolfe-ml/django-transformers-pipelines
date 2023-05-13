@@ -1,6 +1,6 @@
 django-transformers-pipelines
 ===============
-![Deployment Status](https://github.com/wolfe-ml/django-transformers-pipelines/blob/main/.github/workflows/deploy.yml/badge.svg)
+![Deployment Status](https://github.com/wolfe-ml/django-transformers-pipelines/actions/workflows/deploy.yml/badge.svg)
 
 This is still in development and has not yet been released
 
