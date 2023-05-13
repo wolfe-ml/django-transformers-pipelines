@@ -2,11 +2,12 @@ name: deploy
 
 on:
   pull_request:
+    branches: [main]
   push:
-    branches: main
+    branches: [main]
 
 jobs:
-  linting-and-tests:
+  tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -14,8 +15,8 @@ jobs:
 
       - name: Install Python Dependencies
         run: |
-          pip install -e .
-          pip install pylint coverage
+          python -m pip install --upgrade pip
+          pip install .[test]
 
       - name: Linting (Pylint)
         run: pylint django_transformers_pipelines
