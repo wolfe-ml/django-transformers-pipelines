@@ -18,7 +18,7 @@ def mock_pipeline(**kwargs):
     """Mock pipeline for testing"""
     if not kwargs:
         raise Exception
-    return dict(**kwargs)
+    return {**kwargs}
 
 
 class UtilsTest(TestCase):
